@@ -1,22 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export default function AddBudget() {
+export default function EditBudget() {
+    const { id } = useParams();
     const router = useRouter();
-    const [form, setForm] = useState({
-        category: "",
-        amount: "",
-        month: "",
-    });
+    const [form, setForm] = useState({ category: "", amount: "", month: "" });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        async function fetchBudget() {
+            try {
+                const res = await fetch(`/api/budgets/${id}`);
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || "Not found");
+                setForm({
+                    category: data.budget.category,
+                    amount: data.budget.amount.toString(),
+                    month: data.budget.month,
+                });
+            } catch (err: any) {
+                setError(err.message);
+            }
+        }
+        fetchBudget();
+    }, [id]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -29,20 +44,17 @@ export default function AddBudget() {
         setLoading(true);
         setError("");
         try {
-            const res = await fetch("/api/budgets", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            const res = await fetch(`/api/budgets/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...form,
                     amount: parseFloat(form.amount),
                 }),
             });
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || "Error saving");
+            if (!res.ok) throw new Error(data.message || "Update failed");
             setSuccess(true);
-            setForm({ category: "", amount: "", month: "" });
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -61,7 +73,7 @@ export default function AddBudget() {
                         ← Back to Budgets
                     </p>
                     <h1 className="text-3xl font-bold text-center text-gray-800">
-                        Add Budget
+                        Edit Budget
                     </h1>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
@@ -135,7 +147,7 @@ export default function AddBudget() {
                         )}
                         {success && (
                             <p className="text-sm text-green-600">
-                                Budget saved successfully!
+                                Budget updated successfully!
                             </p>
                         )}
 
@@ -144,33 +156,7 @@ export default function AddBudget() {
                             disabled={loading}
                             className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
                         >
-                            {/* {loading ? "Saving..." : "Save Budget"} */}
-                            {loading ? (
-                                <div className="flex items-center justify-center gap-2">
-                                    <svg
-                                        className="w-4 h-4 text-white animate-spin"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <circle
-                                            className="opacity-25"
-                                            cx="12"
-                                            cy="12"
-                                            r="10"
-                                            stroke="currentColor"
-                                            strokeWidth="4"
-                                        />
-                                        <path
-                                            className="opacity-75"
-                                            fill="currentColor"
-                                            d="M4 12a8 8 0 018-8v8H4z"
-                                        />
-                                    </svg>
-                                    Saving...
-                                </div>
-                            ) : (
-                                "Save Budget"
-                            )}
+                            {loading ? "Updating..." : "Update Budget"}
                         </Button>
                     </form>
                 </CardContent>
@@ -178,39 +164,3 @@ export default function AddBudget() {
         </div>
     );
 }
-// 'use client';
-// export default function Page() {
-//   return (
-//     <div>
-//       <h2 className="mb-4 text-2xl font-bold">Add Budget</h2>
-//       <form className="max-w-md space-y-4">
-//         <div>
-//           <label className="block mb-1">Category</label>
-//           <select className="w-full p-2 border rounded">
-//             <option>Select category</option>
-//             <option>Groceries</option>
-//             <option>Utilities</option>
-//             <option>Entertainment</option>
-//           </select>
-//         </div>
-//         <div>
-//           <label className="block mb-1">Amount</label>
-//           <input type="number" className="w-full p-2 border rounded" placeholder="$" />
-//         </div>
-//         <div>
-//           <label className="block mb-1">Month</label>
-//           <select className="w-full p-2 border rounded">
-//             <option>Month</option>
-//             <option>January</option>
-//             <option>February</option>
-//             <option>March</option>
-//           </select>
-//         </div>
-//         <div className="flex justify-end gap-4">
-//           <button type="button" className="text-gray-600 hover:underline">Cancel</button>
-//           <button type="submit" className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Save Budget</button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
