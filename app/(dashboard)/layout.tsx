@@ -28,6 +28,7 @@ export default function DashboardLayout({
             console.log("Logout failed", error);
         }
     };
+
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
@@ -39,25 +40,31 @@ export default function DashboardLayout({
                     <Link href="/dashboard" className={linkClass("/dashboard")}>
                         Dashboard
                     </Link>
-                    <Link
-                        href="/transaction"
-                        className={linkClass("/transaction")}
-                    >
+                    <Link href="/transaction" className={linkClass("/transaction")}>
                         Transactions
                     </Link>
                     <Link href="/budgets" className={linkClass("/budgets")}>
                         Budgets
                     </Link>
-                    <Link
-                        href="/saving-goal"
-                        className={linkClass("/saving-goal")}
-                    >
+                    <Link href="/saving-goal" className={linkClass("/saving-goal")}>
                         Savings Goals
                     </Link>
                     <Link href="/account" className={linkClass("/account")}>
                         Account
                     </Link>
+
+                    {/* ✅ Remaining Feature Links */}
+                    <Link href="/debts" className={linkClass("/debts")}>
+                        Debts
+                    </Link>
+                    <Link href="/subscriptions" className={linkClass("/subscriptions")}>
+                        Subscriptions
+                    </Link>
+                    <Link href="/missions" className={linkClass("/missions")}>
+                        Missions
+                    </Link>
                 </nav>
+
                 <button
                     onClick={handleLogout}
                     className="text-sm text-gray-600 hover:underline dark:text-gray-400"
