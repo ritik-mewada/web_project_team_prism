@@ -16,9 +16,19 @@ export default function LoginForm() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    const validateEmail = (email: string) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
+
+        if (!validateEmail(form.email)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
+
         setLoading(true);
         try {
             const res = await fetch("/api/auth/login", {
