@@ -59,7 +59,7 @@ export default function DebtsPage() {
         <div className="p-6 bg-white shadow-xl rounded-xl animate-fade-in">
           <h3 className="mb-4 text-lg font-semibold">Debt Overview</h3>
           {loading && <p>Loading...</p>}
-          {error && <p className="text-red-600">{error}</p>}
+          {/* {error && <p className="text-red-600">{error}</p>} */}
           {!loading && debts.length === 0 && (
             <p className="text-gray-500">No debts found.</p>
           )}
