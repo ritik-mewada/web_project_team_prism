@@ -1,71 +1,75 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/jwt";
 import connectToDatabase from "@/lib/db";
 import { Debt } from "@/model/Debt";
 
-
 export async function GET() {
     try {
         await connectToDatabase();
+
         const cookieStore = cookies();
         const token = (await cookieStore).get("token")?.value;
+
         if (!token) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+            return NextResponse.json(
+                { message: "Unauthorized" },
+                { status: 401 }
+            );
         }
+
         const decoded = await verifyToken(token);
-        if (!decoded) {
-            return NextResponse.json({ message: "Invalid token" }, { status: 401 });
-        }
         const userId = decoded.id;
-        if (!userId) {
-            return NextResponse.json({ message: "User ID not found" }, { status: 401 });
-        }
-        const debts = await Debt.find({ userId }).sort({ createdAt: -1 });
-        if (!debts || debts.length === 0) {
-            return NextResponse.json({ message: "No debts found" }, { status: 404 });
-        }
-        return NextResponse.json(debts);
-    } catch (error) {
-        console.error("GET ERROR: ", error);
+
+        const debts = await Debt.find({ userId }).sort({ dueDate: 1 });
+
+        return NextResponse.json({ debts });
+    } catch (err) {
+        console.error("Debt fetch error:", err);
         return NextResponse.json({ message: "Server error" }, { status: 500 });
     }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         await connectToDatabase();
-        const cookieStore = cookies();
-        const token = (await cookieStore).get("token")?.value;
+        const token = (await cookies()).get("token")?.value;
+        const user = await verifyToken(token!);
+
         if (!token) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        }
-        const decoded = await verifyToken(token);
-        if (!decoded) {
-            return NextResponse.json({ message: "Invalid token" }, { status: 401 });
-        }
-        const userId = decoded.id;
-        const body = await req.json();
-        if (!body.type || !body.amount || !body.dueDate) {
             return NextResponse.json(
-                { message: "Missing fields" },
+                { message: "Unauthorized" },
+                { status: 401 }
+            );
+        }
+
+        const { type, amount, dueDate } = await req.json();
+
+        if (!type || !amount || !dueDate) {
+            return NextResponse.json(
+                { message: "All fields are required" },
                 { status: 400 }
             );
         }
+
         const newDebt = new Debt({
-            userId,
-            type: body.type,
-            amount: parseFloat(body.amount),
-            dueDate: body.dueDate,
+            userId: user.id,
+            type,
+            amount,
+            dueDate: new Date(dueDate),
         });
+        console.log(newDebt);
         await newDebt.save();
+
         return NextResponse.json(
             { message: "Debt added successfully", debt: newDebt },
             { status: 201 }
         );
-    } catch (err: any) {
+    } catch (err) {
+        console.error("[DEBT_POST_ERROR]", err);
         return NextResponse.json(
-            { message: err.message || "Server error" },
+            { message: "Internal Server Error" },
             { status: 500 }
         );
     }
