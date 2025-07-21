@@ -35,6 +35,7 @@ export default function Page() {
     const [categories, setCategories] = useState<any>({});
     const [monthly, setMonthly] = useState<any>({});
     const [transactions, setTransactions] = useState<any[]>([]);
+    const incomePlaceholder = 5000; // Default income placeholder
 
     useEffect(() => {
         async function fetchDashboard() {
@@ -86,7 +87,7 @@ export default function Page() {
                     <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
                         <p className="text-sm text-emerald-600 dark:text-emerald-300">Total Income</p>
                         <p className="text-2xl font-bold text-emerald-900 dark:text-emerald-200">
-                            ${income.toLocaleString()}
+                            ${income <= 0 ? incomePlaceholder : income.toLocaleString()}
                         </p>
                     </div>
                     <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
