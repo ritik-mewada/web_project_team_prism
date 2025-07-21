@@ -30,8 +30,7 @@ export default function EditTransactionPage() {
 
                 if (!res.ok) throw new Error(data.message || "Failed to load");
 
-                const { date, description, category, amount } =
-                    data.transaction;
+                const { date, description, category, amount } = data.transaction;
 
                 setForm({
                     date: new Date(date).toISOString().split("T")[0],
@@ -87,10 +86,16 @@ export default function EditTransactionPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-gray-50 to-blue-100">
-            <Card className="w-full max-w-md p-6 bg-white shadow-2xl rounded-2xl animate-fade-in">
+        <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800">
+            <Card className="w-full max-w-md p-6 bg-white dark:bg-slate-900 shadow-2xl rounded-2xl animate-fade-in border border-emerald-100 dark:border-emerald-900">
                 <CardContent className="space-y-6">
-                    <h1 className="text-2xl font-bold text-center text-gray-800">
+                    <p
+                        onClick={() => router.push("/transaction")}
+                        className="w-full text-[15px] text-emerald-700 dark:text-emerald-300 cursor-pointer hover:underline"
+                    >
+                        ← Back to Transactions
+                    </p>
+                    <h1 className="text-3xl font-bold text-center text-emerald-900 dark:text-emerald-200">
                         Edit Transaction
                     </h1>
 
@@ -99,7 +104,9 @@ export default function EditTransactionPage() {
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="date">Date</Label>
+                                <Label htmlFor="date" className="text-emerald-900 dark:text-emerald-200">
+                                    Date
+                                </Label>
                                 <Input
                                     type="date"
                                     id="date"
@@ -107,12 +114,14 @@ export default function EditTransactionPage() {
                                     value={form.date}
                                     onChange={handleChange}
                                     required
-                                    className="text-black bg-gray-100 border-none"
+                                    className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="description">Description</Label>
+                                <Label htmlFor="description" className="text-emerald-900 dark:text-emerald-200">
+                                    Description
+                                </Label>
                                 <Input
                                     type="text"
                                     id="description"
@@ -120,33 +129,35 @@ export default function EditTransactionPage() {
                                     value={form.description}
                                     onChange={handleChange}
                                     required
-                                    className="text-black bg-gray-100 border-none"
+                                    className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="category">Category</Label>
+                                <Label htmlFor="category" className="text-emerald-900 dark:text-emerald-200">
+                                    Category
+                                </Label>
                                 <select
                                     id="category"
                                     name="category"
                                     value={form.category}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-3 py-2 text-black bg-gray-100 border-none rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    className="w-full px-3 py-2 text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                 >
                                     <option value="">Select Category</option>
                                     <option value="Groceries">Groceries</option>
                                     <option value="Rent">Rent</option>
                                     <option value="Utilities">Utilities</option>
                                     <option value="Salary">Salary</option>
-                                    <option value="Entertainment">
-                                        Entertainment
-                                    </option>
+                                    <option value="Entertainment">Entertainment</option>
                                 </select>
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="amount">Amount</Label>
+                                <Label htmlFor="amount" className="text-emerald-900 dark:text-emerald-200">
+                                    Amount ($)
+                                </Label>
                                 <Input
                                     type="number"
                                     id="amount"
@@ -154,15 +165,15 @@ export default function EditTransactionPage() {
                                     value={form.amount}
                                     onChange={handleChange}
                                     required
-                                    className="text-black bg-gray-100 border-none"
+                                    className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
                                 />
                             </div>
 
                             {error && (
-                                <p className="text-sm text-red-600">{error}</p>
+                                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                             )}
                             {success && (
-                                <p className="text-sm text-green-600">
+                                <p className="text-sm text-green-600 dark:text-green-400">
                                     ✅ Transaction updated!
                                 </p>
                             )}
@@ -170,11 +181,34 @@ export default function EditTransactionPage() {
                             <Button
                                 type="submit"
                                 disabled={submitting}
-                                className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
+                                className="w-full text-white bg-emerald-600 hover:bg-emerald-700 transition-all font-semibold rounded-lg shadow-md disabled:opacity-70"
                             >
-                                {submitting
-                                    ? "Updating..."
-                                    : "Update Transaction"}
+                                {submitting ? (
+                                    <div className="flex items-center justify-center gap-2">
+                                        <svg
+                                            className="w-4 h-4 text-white animate-spin"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            />
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8v8H4z"
+                                            />
+                                        </svg>
+                                        Updating...
+                                    </div>
+                                ) : (
+                                    "Update Transaction"
+                                )}
                             </Button>
                         </form>
                     )}

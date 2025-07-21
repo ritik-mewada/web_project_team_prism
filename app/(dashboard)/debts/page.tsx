@@ -45,22 +45,22 @@ export default function DebtsPage() {
     };
 
     return (
-        <div className="flex min-h-screen px-4 py-8 text-gray-800 bg-gradient-to-br from-gray-50 to-blue-100">
+        <div className="flex min-h-screen bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800 text-slate-800 dark:text-slate-200 px-4 py-8">
             <main className="flex-1 max-w-4xl mx-auto space-y-8">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">Debts</h2>
+                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-200">Debts</h2>
                     <Link href="/debts/add">
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded shadow">
+                        <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg shadow-md transition duration-200 font-semibold hover:scale-105">
                             + Add Debt
                         </button>
                     </Link>
                 </div>
 
-                <div className="p-6 bg-white shadow-xl rounded-xl animate-fade-in">
-                    <h3 className="mb-4 text-lg font-semibold">
+                <div className="p-6 bg-white dark:bg-slate-900 shadow-2xl rounded-2xl border border-emerald-100 dark:border-emerald-900 animate-fade-in">
+                    <h3 className="mb-4 text-lg font-semibold text-emerald-900 dark:text-emerald-200">
                         Debt Overview
                     </h3>
-                    {loading && <p>Loading...</p>}
+                    {loading && <p className="text-gray-500">Loading...</p>}
                     {error && <p className="text-red-600">{error}</p>}
                     {!loading && debts.length === 0 && (
                         <p className="text-gray-500">No debts found.</p>
@@ -68,42 +68,33 @@ export default function DebtsPage() {
                     {debts.length > 0 && (
                         <table className="w-full text-sm text-left">
                             <thead>
-                                <tr className="text-gray-600 border-b">
+                                <tr className="text-emerald-700 dark:text-emerald-300 border-b">
                                     <th className="pb-2">Type</th>
                                     <th className="pb-2">Due Date</th>
                                     <th className="pb-2 text-right">Amount</th>
+                                    <th className="pb-2 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {debts.map((d) => (
+                                {debts.map((d, i) => (
                                     <tr
                                         key={d._id}
-                                        className="border-t hover:bg-gray-50"
+                                        className={`border-t rounded transition ${i % 2 === 0 ? "bg-slate-50 dark:bg-slate-800" : ""} hover:bg-emerald-50 dark:hover:bg-emerald-900`}
                                     >
                                         <td className="py-3">{d.type}</td>
-                                        <td>
-                                            {new Date(
-                                                d.dueDate
-                                            ).toLocaleDateString()}
-                                        </td>
+                                        <td>{new Date(d.dueDate).toLocaleDateString()}</td>
+                                        <td className="text-right">${d.amount.toFixed(2)}</td>
                                         <td className="text-right">
-                                            ${d.amount.toFixed(2)}
-                                            <div className="flex justify-end gap-2 mt-1">
+                                            <div className="flex justify-end gap-2">
                                                 <button
-                                                    onClick={() =>
-                                                        router.push(
-                                                            `/debts/edit/${d._id}`
-                                                        )
-                                                    }
-                                                    className="text-sm text-blue-600 hover:underline"
+                                                    onClick={() => router.push(`/debts/edit/${d._id}`)}
+                                                    className="text-sm text-emerald-700 hover:bg-emerald-100 px-2 py-1 rounded dark:text-emerald-300 dark:hover:bg-emerald-800"
                                                 >
                                                     Edit
                                                 </button>
                                                 <button
-                                                    onClick={() =>
-                                                        handleDelete(d._id)
-                                                    }
-                                                    className="text-sm text-red-600 hover:underline"
+                                                    onClick={() => handleDelete(d._id)}
+                                                    className="text-sm text-red-600 hover:bg-red-100 px-2 py-1 rounded dark:text-red-400 dark:hover:bg-red-900"
                                                 >
                                                     Delete
                                                 </button>

@@ -51,41 +51,43 @@ export default function AddBudget() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-gradient-to-br from-gray-50 to-blue-100">
-            <Card className="w-full max-w-md p-6 bg-white shadow-2xl rounded-2xl animate-fade-in">
+        <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800">
+            <Card className="w-full max-w-md p-6 bg-white dark:bg-slate-900 shadow-2xl rounded-2xl animate-fade-in border border-emerald-100 dark:border-emerald-900">
                 <CardContent className="space-y-6">
                     <p
                         onClick={() => router.push("/budgets")}
-                        className="self-start text-[15px] w-full max-w-md mb-4 text-blue-600 cursor-pointer hover:underline"
+                        className="w-full text-[15px] text-emerald-700 dark:text-emerald-300 cursor-pointer hover:underline"
                     >
                         ← Back to Budgets
                     </p>
-                    <h1 className="text-3xl font-bold text-center text-gray-800">
+                    <h1 className="text-3xl font-bold text-center text-emerald-900 dark:text-emerald-200">
                         Add Budget
                     </h1>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="category">Category</Label>
+                            <Label htmlFor="category" className="text-emerald-900 dark:text-emerald-200">
+                                Category
+                            </Label>
                             <select
                                 id="category"
                                 name="category"
                                 value={form.category}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 text-black bg-gray-100 border-none rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="w-full px-3 py-2 text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                 required
                             >
                                 <option value="">Select Category</option>
                                 <option value="Groceries">Groceries</option>
                                 <option value="Rent">Rent</option>
                                 <option value="Utilities">Utilities</option>
-                                <option value="Entertainment">
-                                    Entertainment
-                                </option>
+                                <option value="Entertainment">Entertainment</option>
                             </select>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="amount">Amount</Label>
+                            <Label htmlFor="amount" className="text-emerald-900 dark:text-emerald-200">
+                                Amount
+                            </Label>
                             <Input
                                 id="amount"
                                 name="amount"
@@ -93,19 +95,21 @@ export default function AddBudget() {
                                 placeholder="e.g., 250"
                                 value={form.amount}
                                 onChange={handleChange}
-                                className="text-black bg-gray-100 border-none"
+                                className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
                                 required
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="month">Month</Label>
+                            <Label htmlFor="month" className="text-emerald-900 dark:text-emerald-200">
+                                Month
+                            </Label>
                             <select
                                 id="month"
                                 name="month"
                                 value={form.month}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 text-black bg-gray-100 border-none rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="w-full px-3 py-2 text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                 required
                             >
                                 <option value="">Select Month</option>
@@ -131,10 +135,10 @@ export default function AddBudget() {
                         </div>
 
                         {error && (
-                            <p className="text-sm text-red-600">{error}</p>
+                            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                         )}
                         {success && (
-                            <p className="text-sm text-green-600">
+                            <p className="text-sm text-green-600 dark:text-green-400">
                                 Budget saved successfully!
                             </p>
                         )}
@@ -142,9 +146,8 @@ export default function AddBudget() {
                         <Button
                             type="submit"
                             disabled={loading}
-                            className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
+                            className="w-full text-white bg-emerald-600 hover:bg-emerald-700 transition-all font-semibold rounded-lg shadow-md disabled:opacity-70"
                         >
-                            {/* {loading ? "Saving..." : "Save Budget"} */}
                             {loading ? (
                                 <div className="flex items-center justify-center gap-2">
                                     <svg
@@ -178,39 +181,3 @@ export default function AddBudget() {
         </div>
     );
 }
-// 'use client';
-// export default function Page() {
-//   return (
-//     <div>
-//       <h2 className="mb-4 text-2xl font-bold">Add Budget</h2>
-//       <form className="max-w-md space-y-4">
-//         <div>
-//           <label className="block mb-1">Category</label>
-//           <select className="w-full p-2 border rounded">
-//             <option>Select category</option>
-//             <option>Groceries</option>
-//             <option>Utilities</option>
-//             <option>Entertainment</option>
-//           </select>
-//         </div>
-//         <div>
-//           <label className="block mb-1">Amount</label>
-//           <input type="number" className="w-full p-2 border rounded" placeholder="$" />
-//         </div>
-//         <div>
-//           <label className="block mb-1">Month</label>
-//           <select className="w-full p-2 border rounded">
-//             <option>Month</option>
-//             <option>January</option>
-//             <option>February</option>
-//             <option>March</option>
-//           </select>
-//         </div>
-//         <div className="flex justify-end gap-4">
-//           <button type="button" className="text-gray-600 hover:underline">Cancel</button>
-//           <button type="submit" className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Save Budget</button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }

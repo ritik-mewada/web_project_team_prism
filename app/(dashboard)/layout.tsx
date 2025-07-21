@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { User, Home, CreditCard, DollarSign, Target, UserCircle, FileText, Shield, TrendingUp, LogOut } from "lucide-react";
+import Image from "next/image";
 
 export default function DashboardLayout({
     children,
@@ -36,7 +37,7 @@ export default function DashboardLayout({
             <aside className="w-72 min-h-screen p-6 space-y-8 bg-gradient-to-br from-emerald-100 to-slate-200 shadow-2xl dark:from-emerald-900 dark:to-slate-800 flex flex-col justify-between">
                 <div>
                     <div className="flex items-center gap-3 mb-8">
-                        <UserCircle className="w-10 h-10 text-blue-600" />
+                        <Image src="/logo.png" alt="Logo" width={40} height={40} />
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                                 Finance Tracker
@@ -79,7 +80,7 @@ export default function DashboardLayout({
             </aside>
 
             {/* Main content */}
-            <main className="flex-1 p-8 text-gray-900 bg-white dark:bg-black dark:text-white rounded-2xl shadow-lg m-6 overflow-auto">
+            <main className="flex-1 text-gray-900 bg-white dark:bg-black dark:text-white shadow-lg overflow-auto">
                 {children}
             </main>
         </div>

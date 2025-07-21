@@ -28,8 +28,6 @@ ChartJS.register(
 );
 
 export default function Page() {
-    // const [username, setUsername] = useState("");
-    // const [transactions, setTransactions] = useState<any[]>([]);
     const [username, setUsername] = useState("");
     const [income, setIncome] = useState(0);
     const [expenses, setExpenses] = useState(0);
@@ -73,147 +71,42 @@ export default function Page() {
 
         fetchDashboard();
     }, []);
-    // useEffect(() => {
-    //     async function fetchUser() {
-    //         try {
-    //             const res = await fetch("/api/auth/me");
-    //             const data = await res.json();
-    //             if (res.ok) {
-    //                 setUsername(data.user.username);
-    //             }
-    //         } catch (err) {
-    //             console.error("Failed to load user", err);
-    //         }
-    //     }
-    //     async function fetchRecentTransactions() {
-    //         try {
-    //             const res = await fetch("/api/transactions");
-    //             const data = await res.json();
-    //             if (res.ok) {
-    //                 setTransactions(data.transactions.slice(0, 5));
-    //             }
-    //         } catch (err) {
-    //             console.error("Failed to load transactions", err);
-    //         }
-    //     }
 
-    //     fetchUser();
-    //     fetchRecentTransactions();
-    // }, []);
     return (
-        <div className="flex min-h-screen text-gray-800 bg-gray-50">
-            {/* Sidebar */}
-
-            {/* Main Content */}
-            <main className="flex-1 p-8 space-y-6">
+        <div className="flex min-h-screen bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800 text-slate-800 dark:text-slate-200">
+            <main className="flex-1 p-10 space-y-8 max-w-6xl mx-auto">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">
+                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-200">
                         {username ? `Welcome, ${username}!` : "Welcome!"}
                     </h2>
                 </div>
 
                 {/* Stats */}
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                    <div className="p-4 text-center bg-white rounded shadow">
-                        <p className="text-sm text-gray-500">Total Income</p>
-                        <p className="text-xl font-bold">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                    <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
+                        <p className="text-sm text-emerald-600 dark:text-emerald-300">Total Income</p>
+                        <p className="text-2xl font-bold text-emerald-900 dark:text-emerald-200">
                             ${income.toLocaleString()}
                         </p>
                     </div>
-                    <div className="p-4 text-center bg-white rounded shadow">
-                        <p className="text-sm text-gray-500">Total Expenses</p>
-                        <p className="text-xl font-bold">
+                    <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
+                        <p className="text-sm text-rose-600 dark:text-rose-300">Total Expenses</p>
+                        <p className="text-2xl font-bold text-rose-900 dark:text-rose-200">
                             ${expenses.toLocaleString()}
                         </p>
                     </div>
-                    <div className="p-4 text-center bg-white rounded shadow">
-                        <p className="text-sm text-gray-500">
-                            Savings Progress
-                        </p>
-                        <p className="text-xl font-bold">
+                    <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
+                        <p className="text-sm text-blue-600 dark:text-blue-300">Savings Progress</p>
+                        <p className="text-2xl font-bold text-blue-900 dark:text-blue-200">
                             ${savings.toLocaleString()}
                         </p>
                     </div>
                 </div>
 
                 {/* Charts */}
-                {/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="p-4 bg-white rounded shadow">
-                        <h3 className="mb-2 font-semibold">
-                            Expense Categories
-                        </h3>
-                        <div className="max-w-[300px] mx-auto">
-                            <Doughnut
-                                data={{
-                                    labels: Object.keys(monthly),
-                                    datasets: [
-                                        {
-                                            label: "Expenses",
-                                            data: Object.values(monthly),
-                                            backgroundColor: [
-                                                "#f97316",
-                                                "#10b981",
-                                                "#3b82f6",
-                                                "#facc15",
-                                            ],
-                                            borderWidth: 1,
-                                        },
-                                    ],
-                                }}
-                                options={{
-                                    plugins: {
-                                        legend: {
-                                            labels: {
-                                                color: "#1f2937", // text-gray-800
-                                            },
-                                        },
-                                    },
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <div className="p-4 bg-white rounded shadow">
-                        <h3 className="mb-2 font-semibold">Monthly Trends</h3>
-                        <Bar
-                            data={{
-                                labels: [
-                                    "Jan",
-                                    "Feb",
-                                    "Mar",
-                                    "Apr",
-                                    "May",
-                                    "Jun",
-                                ],
-                                datasets: [
-                                    {
-                                        label: "Expenses",
-                                        data: [400, 450, 500, 600, 550, 700],
-                                        backgroundColor: "#3b82f6",
-                                        borderRadius: 6,
-                                    },
-                                ],
-                            }}
-                            options={{
-                                responsive: true,
-                                plugins: {
-                                    legend: { display: false },
-                                },
-                                scales: {
-                                    x: {
-                                        ticks: { color: "#1f2937" }, // text-gray-800
-                                    },
-                                    y: {
-                                        beginAtZero: true,
-                                        ticks: { color: "#1f2937" }, // text-gray-800
-                                    },
-                                },
-                            }}
-                        />
-                    </div>
-                </div> */}
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="p-4 bg-white rounded shadow">
-                        <h3 className="mb-2 font-semibold">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                    <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
+                        <h3 className="mb-4 font-semibold text-emerald-900 dark:text-emerald-200">
                             Expense Categories
                         </h3>
                         <div className="max-w-[300px] mx-auto">
@@ -224,12 +117,12 @@ export default function Page() {
                                         {
                                             data: Object.values(categories),
                                             backgroundColor: [
-                                                "#f97316",
-                                                "#10b981",
-                                                "#3b82f6",
-                                                "#facc15",
-                                                "#a855f7",
-                                                "#ef4444",
+                                                "#f97316", // orange
+                                                "#10b981", // emerald
+                                                "#3b82f6", // blue
+                                                "#facc15", // yellow
+                                                "#a855f7", // purple
+                                                "#ef4444", // red
                                             ],
                                             borderWidth: 1,
                                         },
@@ -239,7 +132,7 @@ export default function Page() {
                                     plugins: {
                                         legend: {
                                             labels: {
-                                                color: "#1f2937",
+                                                color: "#059669", // emerald-600
                                             },
                                         },
                                     },
@@ -247,8 +140,8 @@ export default function Page() {
                             />
                         </div>
                     </div>
-                    <div className="p-4 bg-white rounded shadow">
-                        <h3 className="mb-2 font-semibold">Monthly Trends</h3>
+                    <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
+                        <h3 className="mb-4 font-semibold text-emerald-900 dark:text-emerald-200">Monthly Trends</h3>
                         <Bar
                             data={{
                                 labels: Object.keys(monthly),
@@ -256,7 +149,7 @@ export default function Page() {
                                     {
                                         label: "Expenses",
                                         data: Object.values(monthly),
-                                        backgroundColor: "#3b82f6",
+                                        backgroundColor: "#10b981", // emerald
                                         borderRadius: 6,
                                     },
                                 ],
@@ -268,11 +161,11 @@ export default function Page() {
                                 },
                                 scales: {
                                     x: {
-                                        ticks: { color: "#1f2937" },
+                                        ticks: { color: "#059669" }, // emerald-600
                                     },
                                     y: {
                                         beginAtZero: true,
-                                        ticks: { color: "#1f2937" },
+                                        ticks: { color: "#059669" }, // emerald-600
                                     },
                                 },
                             }}
@@ -281,11 +174,11 @@ export default function Page() {
                 </div>
 
                 {/* Recent Transactions */}
-                <div className="p-4 bg-white rounded shadow">
-                    <h3 className="mb-4 font-semibold">Recent Transactions</h3>
+                <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-emerald-100 dark:border-emerald-900">
+                    <h3 className="mb-4 font-semibold text-emerald-900 dark:text-emerald-200">Recent Transactions</h3>
                     <table className="w-full text-sm text-left">
                         <thead>
-                            <tr className="text-gray-600 border-b">
+                            <tr className="text-emerald-700 dark:text-emerald-300 border-b">
                                 <th className="pb-2">Date</th>
                                 <th className="pb-2">Description</th>
                                 <th className="pb-2">Category</th>
@@ -293,55 +186,12 @@ export default function Page() {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {[
-                                {
-                                    date: "Apr 20, 2024",
-                                    desc: "Groceries",
-                                    cat: "Groceries",
-                                    amt: "$150.00",
-                                },
-                                {
-                                    date: "Apr 15, 2024",
-                                    desc: "Salary",
-                                    cat: "Income",
-                                    amt: "$3,000.00",
-                                },
-                                {
-                                    date: "Apr 01, 2024",
-                                    desc: "Rent",
-                                    cat: "Rent",
-                                    amt: "$1,200.00",
-                                },
-                                {
-                                    date: "Mar 22, 2024",
-                                    desc: "Internet",
-                                    cat: "Utilities",
-                                    amt: "$60.00",
-                                },
-                                {
-                                    date: "Mar 19, 2024",
-                                    desc: "Dining Out",
-                                    cat: "Entertainment",
-                                    amt: "$45.00",
-                                },
-                            ].map((t, i) => (
-                                <tr key={i} className="text-gray-800 border-t">
-                                    <td className="py-2">{t.date}</td>
-                                    <td>{t.desc}</td>
-                                    <td>{t.cat}</td>
-                                    <td className="text-right">{t.amt}</td>
-                                </tr>
-                            ))} */}
                             {transactions.map((t, i) => (
-                                <tr key={i} className="text-gray-800 border-t">
-                                    <td className="py-2">
-                                        {new Date(t.date).toLocaleDateString()}
-                                    </td>
+                                <tr key={i} className="border-t hover:bg-emerald-50 dark:hover:bg-emerald-900 transition">
+                                    <td className="py-2">{new Date(t.date).toLocaleDateString()}</td>
                                     <td>{t.description}</td>
                                     <td>{t.category}</td>
-                                    <td className="text-right">
-                                        ${t.amount.toFixed(2)}
-                                    </td>
+                                    <td className="text-right">${t.amount.toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>

@@ -55,21 +55,21 @@ export default function AddSubscription() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-gradient-to-br from-gray-50 to-blue-100">
-            <Card className="w-full max-w-md p-6 bg-white shadow-2xl rounded-2xl animate-fade-in">
+        <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800">
+            <Card className="w-full max-w-md p-6 bg-white dark:bg-slate-900 shadow-2xl rounded-2xl animate-fade-in border border-emerald-100 dark:border-emerald-900">
                 <CardContent className="space-y-6">
                     <p
                         onClick={() => router.push("/subscriptions")}
-                        className="self-start text-[15px] w-full max-w-md mb-4 text-blue-600 cursor-pointer hover:underline"
+                        className="w-full text-[15px] text-emerald-700 dark:text-emerald-300 cursor-pointer hover:underline"
                     >
                         ← Back to Subscriptions
                     </p>
-                    <h1 className="text-3xl font-bold text-center text-gray-800">
+                    <h1 className="text-3xl font-bold text-center text-emerald-900 dark:text-emerald-200">
                         Add Subscription
                     </h1>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="service" className="text-gray-800">
+                            <Label htmlFor="service" className="text-emerald-900 dark:text-emerald-200">
                                 Service
                             </Label>
                             <Input
@@ -77,14 +77,14 @@ export default function AddSubscription() {
                                 name="service"
                                 value={form.service}
                                 onChange={handleChange}
-                                className="text-black bg-gray-100 border-none"
+                                className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
                                 placeholder="e.g., Netflix"
                                 required
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="amount" className="text-gray-800">
+                            <Label htmlFor="amount" className="text-emerald-900 dark:text-emerald-200">
                                 Amount
                             </Label>
                             <Input
@@ -93,17 +93,14 @@ export default function AddSubscription() {
                                 type="number"
                                 value={form.amount}
                                 onChange={handleChange}
-                                className="text-black bg-gray-100 border-none"
+                                className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
                                 required
                                 placeholder="500"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label
-                                htmlFor="frequency"
-                                className="text-gray-800"
-                            >
+                            <Label htmlFor="frequency" className="text-emerald-900 dark:text-emerald-200">
                                 Frequency
                             </Label>
                             <select
@@ -111,7 +108,7 @@ export default function AddSubscription() {
                                 name="frequency"
                                 value={form.frequency}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 text-black bg-gray-100 border-none rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="w-full px-3 py-2 text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                 required
                             >
                                 <option value="">Select</option>
@@ -121,7 +118,7 @@ export default function AddSubscription() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="status" className="text-gray-800">
+                            <Label htmlFor="status" className="text-emerald-900 dark:text-emerald-200">
                                 Status
                             </Label>
                             <select
@@ -129,7 +126,7 @@ export default function AddSubscription() {
                                 name="status"
                                 value={form.status}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 text-black bg-gray-100 border-none rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="w-full px-3 py-2 text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                 required
                             >
                                 <option value="Active">Active</option>
@@ -139,10 +136,10 @@ export default function AddSubscription() {
                         </div>
 
                         {error && (
-                            <p className="text-sm text-red-600">{error}</p>
+                            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                         )}
                         {success && (
-                            <p className="text-sm text-green-600">
+                            <p className="text-sm text-green-600 dark:text-green-400">
                                 Subscription added successfully!
                             </p>
                         )}
@@ -150,7 +147,7 @@ export default function AddSubscription() {
                         <Button
                             type="submit"
                             disabled={loading}
-                            className="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70"
+                            className="w-full text-white bg-emerald-600 hover:bg-emerald-700 transition-all font-semibold rounded-lg shadow-md disabled:opacity-70"
                         >
                             {loading ? "Saving..." : "Save Subscription"}
                         </Button>

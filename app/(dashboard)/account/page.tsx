@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function AccountPage() {
     const [user, setUser] = useState<{
@@ -14,7 +18,6 @@ export default function AccountPage() {
         const fetchUser = async () => {
             const res = await fetch("/api/auth/me");
             const data = await res.json();
-            console.log(data);
             if (res.ok) {
                 setUser(data.user);
                 setNewUsername(data.user.username);
@@ -39,53 +42,54 @@ export default function AccountPage() {
         }
     };
 
-    if (!user) return <p className="p-4">Loading...</p>;
+    if (!user)
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800">
+                <p className="text-lg text-gray-500">Loading...</p>
+            </div>
+        );
 
     return (
-        <div className="min-h-screen p-8 text-gray-800 bg-gray-50">
-            <h2 className="mb-4 text-xl font-semibold">Account Information</h2>
-            <form
-                onSubmit={handleUpdate}
-                className="max-w-md p-6 space-y-4 bg-white rounded shadow"
-            >
-                <div>
-                    <label className="block mb-1 text-sm font-medium">
-                        Email
-                    </label>
-                    <input
-                        type="text"
-                        value={user.email}
-                        disabled
-                        className="w-full p-2 text-gray-600 bg-gray-100 border rounded"
-                    />
-                </div>
-
-                <div>
-                    <label className="block mb-1 text-sm font-medium">
-                        Username
-                    </label>
-                    <input
-                        type="text"
-                        value={newUsername}
-                        onChange={(e) => setNewUsername(e.target.value)}
-                        className="w-full p-2 text-black bg-gray-100 border rounded"
-                        required
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    className="px-4 py-2 text-white bg-blue-600 rounded shadow hover:bg-blue-700"
-                >
-                    Update
-                </button>
-
-                {message && (
-                    <p className="mt-2 text-sm text-center text-gray-600">
-                        {message}
-                    </p>
-                )}
-            </form>
+        <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-emerald-100 to-slate-200 dark:from-emerald-900 dark:to-slate-800">
+            <Card className="w-full max-w-md p-6 bg-white dark:bg-slate-900 shadow-2xl rounded-2xl animate-fade-in border border-emerald-100 dark:border-emerald-900">
+                <CardContent className="space-y-6">
+                    <h2 className="text-3xl font-bold text-center text-emerald-900 dark:text-emerald-200 mb-4">
+                        Account Information
+                    </h2>
+                    <form onSubmit={handleUpdate} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label className="text-emerald-900 dark:text-emerald-200">Email</Label>
+                            <Input
+                                type="text"
+                                value={user.email}
+                                disabled
+                                className="text-gray-600 bg-emerald-50 dark:bg-slate-800 border-none"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-emerald-900 dark:text-emerald-200">Username</Label>
+                            <Input
+                                type="text"
+                                value={newUsername}
+                                onChange={(e) => setNewUsername(e.target.value)}
+                                className="text-black dark:text-white bg-emerald-50 dark:bg-slate-800 border-none"
+                                required
+                            />
+                        </div>
+                        <Button
+                            type="submit"
+                            className="w-full text-white bg-emerald-600 hover:bg-emerald-700 transition-all font-semibold rounded-lg shadow-md"
+                        >
+                            Update
+                        </Button>
+                        {message && (
+                            <p className="mt-2 text-sm text-center text-gray-600 dark:text-gray-300">
+                                {message}
+                            </p>
+                        )}
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     );
 }
