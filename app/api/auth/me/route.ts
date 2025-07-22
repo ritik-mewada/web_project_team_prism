@@ -1,9 +1,9 @@
 import connectToDatabase from "@/lib/db";
 import { verifyToken } from "@/lib/jwt";
 import { User } from "@/model/User";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: NextResponse) {
+export async function GET(req: NextRequest) {
     await connectToDatabase();
     const token = req.cookies.get("token")?.value;
 
