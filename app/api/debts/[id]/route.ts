@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -15,8 +15,9 @@ export async function GET(
 
         const user = await verifyToken(token!);
 
+        const { id } = await params;
         const debt = await Debt.findOne({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
         console.log(debt);
