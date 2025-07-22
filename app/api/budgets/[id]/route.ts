@@ -4,19 +4,17 @@ import { verifyToken } from "@/lib/jwt";
 import connectToDatabase from "@/lib/db";
 import { Budget } from "@/model/Budget";
 
-type Params = {
-    params: {
-        id: string;
-    };
-};
-
-export async function GET(req: NextRequest, { params }: Params) {
+export async function GET(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
         const user = await verifyToken(token!);
+        const { id } = await params;
         const budget = await Budget.findOne({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
 
@@ -28,15 +26,19 @@ export async function GET(req: NextRequest, { params }: Params) {
     }
 }
 
-export async function PUT(req: NextRequest, { params }: Params) {
+export async function PUT(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
         const user = await verifyToken(token!);
         const data = await req.json();
 
+        const { id } = await params;
         const updated = await Budget.findOneAndUpdate(
-            { _id: params.id, userId: user.id },
+            { _id: id, userId: user.id },
             data,
             { new: true }
         );
@@ -49,14 +51,18 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 }
 
-export async function DELETE(req: NextRequest, { params }: Params) {
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
         const user = await verifyToken(token!);
 
+        const { id } = await params;
         const deleted = await Budget.findOneAndDelete({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
         if (!deleted)
