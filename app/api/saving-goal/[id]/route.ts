@@ -36,7 +36,10 @@ export async function PUT(
         }
         return NextResponse.json({ message: "Updated", goal: result });
     } catch (err) {
-        return NextResponse.json({ message: err.message }, { status: 500 });
+        return NextResponse.json(
+            { message: (err as Error).message },
+            { status: 500 }
+        );
     }
 }
 
@@ -69,7 +72,10 @@ export async function DELETE(
 
         return NextResponse.json({ message: "Deleted" });
     } catch (err) {
-        return NextResponse.json({ message: err.message }, { status: 500 });
+        return NextResponse.json(
+            { message: (err as Error).message },
+            { status: 500 }
+        );
     }
 }
 
@@ -101,7 +107,6 @@ export async function GET(
 
         return NextResponse.json({ savingGoal });
     } catch (err) {
-        console.log(err);
         return NextResponse.json({ message: "Server error" }, { status: 500 });
     }
 }
