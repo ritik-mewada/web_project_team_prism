@@ -5,6 +5,7 @@ import RootProviders from "@/components/Providers/RootProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
 export const metadata: Metadata = {
     title: "Finance Tracker",
     description: "Personal finance dashboard",
