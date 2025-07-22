@@ -6,7 +6,7 @@ import { Transaction } from "@/model/Transaction";
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -18,8 +18,10 @@ export async function DELETE(
             );
 
         const user = await verifyToken(token);
+
+        const { id } = await params;
         const result = await Transaction.findOneAndDelete({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
 
@@ -39,7 +41,7 @@ export async function DELETE(
 
 export async function PUT(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -53,8 +55,9 @@ export async function PUT(
         const user = await verifyToken(token);
         const body = await req.json();
 
+        const { id } = await params;
         const result = await Transaction.findOneAndUpdate(
-            { _id: params.id, userId: user.id },
+            { _id: id, userId: user.id },
             body,
             { new: true }
         );
@@ -75,7 +78,7 @@ export async function PUT(
 
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -87,8 +90,9 @@ export async function GET(
             );
 
         const user = await verifyToken(token);
+        const { id } = await params;
         const transaction = await Transaction.findOne({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
 

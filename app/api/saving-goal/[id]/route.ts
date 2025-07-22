@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export async function PUT(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -21,8 +21,9 @@ export async function PUT(
         const user = await verifyToken(token);
         const body = await req.json();
 
+        const { id } = await params;
         const result = await SavingGoal.findOneAndUpdate(
-            { _id: params.id, userId: user.id },
+            { _id: id, userId: user.id },
             body,
             { new: true }
         );
@@ -41,7 +42,7 @@ export async function PUT(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -53,8 +54,9 @@ export async function DELETE(
             );
 
         const user = await verifyToken(token);
+        const { id } = await params;
         const result = await SavingGoal.findOneAndDelete({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
 
@@ -73,7 +75,7 @@ export async function DELETE(
 
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -87,8 +89,9 @@ export async function GET(
 
         const user = await verifyToken(token);
 
+        const { id } = await params;
         const savingGoal = await SavingGoal.findOne({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
 

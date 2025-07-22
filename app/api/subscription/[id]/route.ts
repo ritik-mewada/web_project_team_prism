@@ -6,14 +6,16 @@ import { NextResponse } from "next/server";
 
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
         const user = await verifyToken(token!);
+
+        const { id } = await params;
         const subscription = await Subscription.findOne({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
 
@@ -28,7 +30,7 @@ export async function GET(
 
 export async function PUT(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
@@ -37,8 +39,9 @@ export async function PUT(
         const user = await verifyToken(token!);
         const data = await req.json();
 
+        const { id } = await params;
         const updated = await Subscription.findByIdAndUpdate(
-            { _id: params.id, userId: user.id },
+            { _id: id, userId: user.id },
             data,
             { new: true }
         );
@@ -53,15 +56,16 @@ export async function PUT(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
         const user = await verifyToken(token!);
 
+        const { id } = await params;
         const deleted = await Subscription.findOneAndDelete({
-            _id: params.id,
+            _id: id,
             userId: user.id,
         });
         if (!deleted)
