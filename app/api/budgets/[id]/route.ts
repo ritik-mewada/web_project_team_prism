@@ -4,10 +4,13 @@ import { verifyToken } from "@/lib/jwt";
 import connectToDatabase from "@/lib/db";
 import { Budget } from "@/model/Budget";
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: { id: string } }
-) {
+type Params = {
+    params: {
+        id: string;
+    };
+};
+
+export async function GET(req: NextRequest, { params }: Params) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
@@ -25,10 +28,7 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, { params }: Params) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
@@ -49,10 +49,7 @@ export async function PUT(
     }
 }
 
-export async function DELETE(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: Params) {
     try {
         await connectToDatabase();
         const token = (await cookies()).get("token")?.value;
